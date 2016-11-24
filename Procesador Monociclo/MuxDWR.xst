@@ -1,0 +1,5 @@
+set -tmpdir "C:/Users/Personal/Downloads/sparcv8-monocicle-master/xst/projnav.tmp"
+set -xsthdpdir "C:/Users/Personal/Downloads/sparcv8-monocicle-master/xst"
+elaborate
+-ifn MuxDWR.prj
+-ifmt mixed
