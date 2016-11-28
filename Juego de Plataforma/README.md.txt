@@ -1,0 +1,1 @@
+Juego de plataforma en 2d, desarrolado en python con la librería Pygame.
