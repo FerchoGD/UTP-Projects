@@ -1279,12 +1279,13 @@ def Jugar():
         for ec in col_objC:
             Item.play()
             N2.stop()
+            N3.stop()
             N1.play(-1)
             jugador.menosPuntaje1()
             jugador.rect.x = 25
             jugador.rect.y = 1125
             pantalla1 = pygame.display.set_mode(T_PANTALLA)
-            texto = fuente.render("N I V E L   1 - 1", True, BLANCO)
+            texto = fuente.render("N I V E L   1 ", True, BLANCO)
             texto2 = fuente.render("Casa Sala Principal", True, BLANCO)
             texto_rect = texto.get_rect()
             texto_x = pantalla1.get_width() / 2 - texto_rect.width / 2       
@@ -1304,14 +1305,36 @@ def Jugar():
         col_objP = pygame.sprite.spritecollide(jugador, puertas1, False)
         for ec in col_objP:
             N1.stop()
+            N3.stop()
             N2.play(-1)
             jugador.masPuntaje2()
             jugador.masPuntaje3()
             jugador.rect.x = 25
             jugador.rect.y = 2100
             pantalla1 = pygame.display.set_mode(T_PANTALLA)
-            texto = fuente.render("N I V E L   1 - 2", True, BLANCO)
+            texto = fuente.render("N I V E L   2", True, BLANCO)
             texto2 = fuente.render("Casa Cuarto Recuperacion", True, BLANCO)
+            texto_rect = texto.get_rect()
+            texto_x = pantalla1.get_width() / 2 - texto_rect.width / 2       
+            texto_y = pantalla1.get_height() / 2 - texto_rect.height / 2
+            pantalla1.blit(texto, [texto_x, texto_y])
+            pantalla1.blit(texto2, [texto_x, texto_y + 60])
+            pygame.display.flip()
+            pygame.time.delay(2000)
+            break
+
+        col_objS = pygame.sprite.spritecollide(jugador, puertas2, False)
+        for ec in col_objP:
+            N1.stop()
+            N2.stop()
+            N3.play(-1)
+            jugador.masPuntaje2()
+            jugador.masPuntaje3()
+            jugador.rect.x = 25
+            jugador.rect.y = 3100
+            pantalla1 = pygame.display.set_mode(T_PANTALLA)
+            texto = fuente.render("N I V E L   3", True, BLANCO)
+            texto2 = fuente.render("Llegando a la meta", True, BLANCO)
             texto_rect = texto.get_rect()
             texto_x = pantalla1.get_width() / 2 - texto_rect.width / 2       
             texto_y = pantalla1.get_height() / 2 - texto_rect.height / 2
@@ -1456,7 +1479,7 @@ def Jugar():
     pygame.mouse.set_visible(True)
 
 def Comenzar():
-    pygame.mixer.music.set_volume(0.85)
+    pygame.mixer.music.set_volume(0.5)
     N1.play(-1)
     jugador.puntaje = 0
     jugador.vida = 100
@@ -1596,6 +1619,9 @@ Menu = [Opcion("Jugar", (440, 400), 0, fMenu, pantalla),
 N1 = pygame.mixer.Sound("Sonidos/Nivel1.ogg")
 pygame.mixer.music.set_volume(1)
 N2 =pygame.mixer.Sound("Sonidos/Nivel2.ogg")
+pygame.mixer.music.set_volume(1)
+N3 =pygame.mixer.Sound("Sonidos/Nivel3.ogg")
+
 
 
 Item = pygame.mixer.Sound('Sonidos/Moneda.ogg')
