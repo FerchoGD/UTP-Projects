@@ -4,7 +4,7 @@ from Library import *
 T_PANTALLA = (1000, 600) 
 
 global INCREMENTO_MOV_HOR
-INCREMENTO_MOV_HOR = 10
+INCREMENTO_MOV_HOR = 2
 
 global FPS
 global clock
@@ -16,11 +16,11 @@ def RelRect(actor, camara):
 #CLASE PARA CENTRAR LA CAMARA EN EL JUGADOR
 class Camara(object): 
 
-    def __init__(self, pantalla, jugador, anchoNivel, largoNivel):
+    def __init__(self, pantalla, jugador, anchonivel1, largonivel1):
         self.jugador = jugador
         self.rect = pantalla.get_rect()
         self.rect.center = self.jugador.center
-        self.mundo_rect = Rect(0, 0, anchoNivel, largoNivel)
+        self.mundo_rect = Rect(0, 0, anchonivel1, largonivel1)
 
     def update(self):
       if self.jugador.centerx > self.rect.centerx + 25:
@@ -68,6 +68,17 @@ class Puerta1(pygame.sprite.Sprite):
 
 #CLASE PARA CREAR PUERTA LEVEL 2
 class Puerta2(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load("Mundo/goal.png").convert_alpha()
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+
+    def update(self):
+        pass
+#CLASE PARA CREAR PUERTA LEVEL 3
+class Puerta3(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load("Mundo/goal.png").convert_alpha()
@@ -198,7 +209,7 @@ class Jugador(pygame.sprite.Sprite):
         self.laser = 4
         self.inCuadro = False
         self.poder = 20
-        self.velocidad = 10
+        self.velocidad = 1
         self.contacto = False
         self.salto = False
         self.image = pygame.image.load('Jugador/b_Verde.png').convert_alpha()
@@ -846,8 +857,8 @@ class eBala(pygame.sprite.Sprite):
             self.rect.x = self.rect.x - self.velocidad
 
 # CLASE PARA LEER EL MAPA Y CREAR EL NIVEL
-class Nivel(object): 
-    def __init__(self, archivo):
+class nivel(object): 
+    def __init__(self, nivel):
         self.nivel = []
         self.mundo = []
         self.enemigos1 = pygame.sprite.Group()
@@ -862,16 +873,21 @@ class Nivel(object):
         self.puertas1 = pygame.sprite.Group()
         self.explosiones = pygame.sprite.Group()
         self.puertas2 = pygame.sprite.Group()
+        self.puertas3 = pygame.sprite.Group()
         self.calaveras = pygame.sprite.Group()
         self.rayos = pygame.sprite.Group()
         self.cuadros = pygame.sprite.Group()
         self.pildoras = pygame.sprite.Group()
         self.estrellas = pygame.sprite.Group()
         self.todos = pygame.sprite.Group()
-        self.balas = pygame.sprite.Group()
-        self.linea = open(archivo, "r")
+        if nivel==1:
+            self.linea = open("niveles/Nivel1.txt", "r")
+        elif nivel==2:
+            self.linea = open("niveles/Nivel2.txt", "r")
+        else:
+            self.linea = open("niveles/Nivel3.txt", "r")
 
-    def crearNivel(self, x, y):
+    def crearnivel(self, x, y):
         for l in self.linea:
             self.nivel.append(l)
 
@@ -915,6 +931,11 @@ class Nivel(object):
                     self.puertas2.add(self.puerta)
                     self.muros.add(self.puerta)
                     self.todos.add(self.puerta)
+                if columnas == "Z":
+                    self.puerta = Puerta3(x, y)
+                    self.puertas3.add(self.puerta)
+                    self.muros.add(self.puerta)
+                    self.todos.add(self.puerta)
                 if columnas == "C":
                     self.calavera = Calavera(x, y)
                     self.calaveras.add(self.calavera)
@@ -949,17 +970,87 @@ class Nivel(object):
         self.largo = (len(lineas))*25
         return (self.ancho, self.largo)
 
+
+    def Limpiar(self):
+        self.mundo=[]
+        self.jugador=None
+        self.todos.empty()
+        self.muros.empty()
+        self.laser.empty()
+        self.enemigos1.empty()
+        self.enemigos2.empty()
+        self.enemigos3.empty()
+        self.enemigos4.empty()
+        self.enemigos5.empty()
+        self.explosiones.empty()
+        self.puertas1.empty()
+        self.puertas2.empty()
+        self.puertas3.empty()
+        self.calaveras.empty()
+        self.estrellas.empty()
+        self.pildoras.empty()
+        self.rayos.empty()
+        self.cuadros.empty()
+        self.balas.empty()
+        self.ebalas.empty()
+        
+
+
+
 #############################################################################################################
+
+def Comenzar():
+    pygame.mixer.music.set_volume(0.5)
+    N1.play(-1)
+    N2.stop()
+    N3.stop()
+    jugador.puntaje = 0
+    jugador.vida = 100
+    jugador.ganar = False
+    jugador.no_mover()
+    jugador.no_arriba()
+    jugador.rect.x = 25
+    jugador.rect.y = 1125
+    jugador.inCuadro = False
+    jugador.poder = 20
+    jugador.velocidad = 5
+    pantalla1 = pygame.display.set_mode(T_PANTALLA)
+    texto = fuente.render("N I V E L   1", True, BLANCO)
+    texto2 = fuente.render("Casa Sala Principal", True, BLANCO)
+    texto_rect = texto.get_rect()
+    texto_x = pantalla1.get_width() / 2 - texto_rect.width / 2       
+    texto_y = pantalla1.get_height() / 2 - texto_rect.height / 2
+    pantalla1.blit(texto, [texto_x, texto_y])
+    pantalla1.blit(texto2, [texto_x - 20, texto_y + 60])
+    pygame.display.flip()
+    pygame.time.delay(2000)
+
+
+
 
 pygame.init()
 pantalla = pygame.display.set_mode(T_PANTALLA)
 pantalla_rect = pantalla.get_rect()
 fondo = pygame.image.load("Mundo/Fondo.jpg").convert()
-nivel = Nivel("Niveles/Niveles.txt")
-nivel.crearNivel(0,0)
+
+
+
+nivel3=nivel(3)
+nivel3.crearnivel(0,0)
+enboss=nivel3.enboss
+puertas3=nivel3.puertas3
+
+nivel2=nivel(2)
+nivel2.crearnivel(0,0)
+puertas2=nivel2.puertas2
+
+
+
+#Preparando el nivel inicial
+nivel = nivel(1)
+nivel.crearnivel(0,0)
 mundo = nivel.mundo
 jugador = nivel.jugador
-enboss = nivel.enboss
 camara = Camara(pantalla, jugador.rect, nivel.getSize()[0], nivel.getSize()[1])
 todos = nivel.todos.copy()
 muros = nivel.muros.copy()
@@ -971,7 +1062,6 @@ enemigos4 = nivel.enemigos4.copy()
 enemigos5 = nivel.enemigos5.copy()
 explosiones = nivel.explosiones.copy()
 puertas1 = nivel.puertas1.copy()
-puertas2 = nivel.puertas2.copy()
 calaveras = nivel.calaveras.copy()
 estrellas = nivel.estrellas.copy()
 pildoras = nivel.pildoras.copy()
@@ -980,6 +1070,13 @@ cuadros = nivel.cuadros.copy()
 ebalas = nivel.ebalas.copy()
 balas = nivel.balas.copy()
 reloj = pygame.time.Clock()
+
+
+
+
+
+
+
 
 def Jugar():
     pygame.mouse.set_visible(False)
@@ -1006,8 +1103,8 @@ def Jugar():
                     laser.add(l)
                     todos.add(l)
             if event.type == KEYDOWN and event.key == K_m:
-                jugador.rect.x = 10140
-                jugador.rect.y = 1700
+                jugador.rect.x = 9000
+                jugador.rect.y = 0
             if event.type == KEYDOWN and event.key == K_UP:
                 jugador.ir_arriba()
             if event.type == KEYDOWN and event.key == K_LEFT:
@@ -1129,7 +1226,7 @@ def Jugar():
                         explosiones.add(ex)
                         todos.add(ex)
 
-        if jugador.rect.x > 9235 and jugador.rect.y > 1735:
+        if jugador.rect.x > 10000 and jugador.rect.y > 3000:
             jugador.inCuadro = True
 
         if jugador.rect.y > 2100:
@@ -1277,10 +1374,13 @@ def Jugar():
 
         col_objC = pygame.sprite.spritecollide(jugador, calaveras, True)
         for ec in col_objC:
+
+            
             Item.play()
             N2.stop()
             N3.stop()
             N1.play(-1)
+            Comenzar()
             jugador.menosPuntaje1()
             jugador.rect.x = 25
             jugador.rect.y = 1125
@@ -1304,13 +1404,46 @@ def Jugar():
 
         col_objP = pygame.sprite.spritecollide(jugador, puertas1, False)
         for ec in col_objP:
+
+
+            global nivel,mundo,jugador,camara,todos,muros,laser
+            global enemigos1,enemigos2,enemigos3,enemigos4,enemigos5
+            global explosiones,puertas1,puertas2,puertas3
+            global calaveras,estrellas,pildoras,rayos,cuadros,ebalas,balas
+            #Preparando el nivel 2
+
+            jugador = nivel2.jugador
+            jugador.velocidad = 5
+            nivel.Limpiar()
+            nivel = nivel2
+            mundo = nivel.mundo
+            camara = Camara(pantalla, jugador.rect, nivel.getSize()[0], nivel.getSize()[1])
+            todos = nivel.todos.copy()
+            muros = nivel.muros.copy()
+            laser = nivel.laser.copy()
+            enemigos1 = nivel.enemigos1.copy()
+            enemigos2 = nivel.enemigos2.copy()
+            enemigos3 = nivel.enemigos3.copy()
+            enemigos4 = nivel.enemigos4.copy()
+            enemigos5 = nivel.enemigos5.copy()
+            explosiones = nivel.explosiones.copy()
+            puertas2 = nivel.puertas2.copy()
+            calaveras.add(nivel.calaveras.copy())
+            estrellas = nivel.estrellas.copy()
+            pildoras = nivel.pildoras.copy()
+            rayos = nivel.rayos.copy()
+            cuadros = nivel.cuadros.copy()
+            ebalas = nivel.ebalas.copy()
+            balas = nivel.balas.copy()
+
+
             N1.stop()
             N3.stop()
             N2.play(-1)
             jugador.masPuntaje2()
             jugador.masPuntaje3()
-            jugador.rect.x = 25
-            jugador.rect.y = 2100
+            jugador.rect.x = 30
+            jugador.rect.y = 0
             pantalla1 = pygame.display.set_mode(T_PANTALLA)
             texto = fuente.render("N I V E L   2", True, BLANCO)
             texto2 = fuente.render("Casa Cuarto Recuperacion", True, BLANCO)
@@ -1324,14 +1457,42 @@ def Jugar():
             break
 
         col_objS = pygame.sprite.spritecollide(jugador, puertas2, False)
-        for ec in col_objP:
+        for ec in col_objS:
+            #Preparando el nivel 3
+
+            jugador = nivel3.jugador
+            jugador.velocidad = 5
+            nivel.Limpiar()
+            nivel = nivel3
+            mundo = nivel.mundo
+            camara = Camara(pantalla, jugador.rect, nivel.getSize()[0], nivel.getSize()[1])
+            todos = nivel.todos.copy()
+            muros = nivel.muros.copy()
+            laser = nivel.laser.copy()
+            enemigos1 = nivel.enemigos1.copy()
+            enemigos2 = nivel.enemigos2.copy()
+            enemigos3 = nivel.enemigos3.copy()
+            enemigos4 = nivel.enemigos4.copy()
+            enemigos5.add(nivel.enemigos5.copy())
+            explosiones = nivel.explosiones.copy()
+            puertas3 = nivel.puertas3.copy()
+            calaveras = nivel.calaveras.copy()
+            estrellas = nivel.estrellas.copy()
+            pildoras = nivel.pildoras.copy()
+            rayos = nivel.rayos.copy()
+            cuadros = nivel.cuadros.copy()
+            ebalas = nivel.ebalas.copy()
+            balas = nivel.balas.copy()
+
+
+
             N1.stop()
             N2.stop()
             N3.play(-1)
             jugador.masPuntaje2()
             jugador.masPuntaje3()
-            jugador.rect.x = 25
-            jugador.rect.y = 3100
+            jugador.rect.x = 0
+            jugador.rect.y = 0
             pantalla1 = pygame.display.set_mode(T_PANTALLA)
             texto = fuente.render("N I V E L   3", True, BLANCO)
             texto2 = fuente.render("Llegando a la meta", True, BLANCO)
@@ -1412,10 +1573,10 @@ def Jugar():
         if pygame.sprite.collide_mask(jugador, enboss):
             jugador.menosVida2()
 
-        col_objP = pygame.sprite.spritecollide(jugador, puertas2, False)
+        col_objP = pygame.sprite.spritecollide(jugador, puertas3, False)
         for ec in col_objP:
             if vencerLider:
-                N2.stop()
+                N3.stop()
                 jugador.masPuntaje()
                 jugador.masPuntaje()
                 jugador.masPuntaje3()
@@ -1464,6 +1625,8 @@ def Jugar():
         if (jugador.vida == 0):
             N1.stop()
             N2.stop()
+            N3.stop()
+            InicioJuego()
             pantalla1 = pygame.display.set_mode(T_PANTALLA)
             texto = fuente.render("A L I A S 7 0  H A  C A I D O A L I N F I E R N O", True, BLANCO)
             puntajem = fuente.render("PUNTAJE: " + str(jugador.puntaje), True, BLANCO)
@@ -1478,29 +1641,6 @@ def Jugar():
         pygame.display.flip()
     pygame.mouse.set_visible(True)
 
-def Comenzar():
-    pygame.mixer.music.set_volume(0.5)
-    N1.play(-1)
-    jugador.puntaje = 0
-    jugador.vida = 100
-    jugador.ganar = False
-    jugador.no_mover()
-    jugador.no_arriba()
-    jugador.rect.x = 25
-    jugador.rect.y = 1125
-    jugador.inCuadro = False
-    jugador.poder = 20
-    jugador.velocidad = 15
-    pantalla1 = pygame.display.set_mode(T_PANTALLA)
-    texto = fuente.render("N I V E L   1 - 1", True, BLANCO)
-    texto2 = fuente.render("Casa Sala Principal", True, BLANCO)
-    texto_rect = texto.get_rect()
-    texto_x = pantalla1.get_width() / 2 - texto_rect.width / 2       
-    texto_y = pantalla1.get_height() / 2 - texto_rect.height / 2
-    pantalla1.blit(texto, [texto_x, texto_y])
-    pantalla1.blit(texto2, [texto_x - 20, texto_y + 60])
-    pygame.display.flip()
-    pygame.time.delay(2000)
 
 
 def InicioJuego():
@@ -1616,12 +1756,12 @@ rMenu3 = fMenuT.render("MUERTE", True, BLANCO)
 Menu = [Opcion("Jugar", (440, 400), 0, fMenu, pantalla),
         Opcion("Salir", (448, 500), 1, fMenu, pantalla)]    
 
-N1 = pygame.mixer.Sound("Sonidos/Nivel1.ogg")
-pygame.mixer.music.set_volume(1)
-N2 =pygame.mixer.Sound("Sonidos/Nivel2.ogg")
-pygame.mixer.music.set_volume(1)
-N3 =pygame.mixer.Sound("Sonidos/Nivel3.ogg")
-
+N1 = pygame.mixer.Sound("Sonidos/nivel1.ogg")
+pygame.mixer.music.set_volume(0.01)
+N2 =pygame.mixer.Sound("Sonidos/nivel2.ogg")
+pygame.mixer.music.set_volume(0.01)
+N3 =pygame.mixer.Sound("Sonidos/nivel3.ogg")
+pygame.mixer.music.set_volume(0.01)
 
 
 Item = pygame.mixer.Sound('Sonidos/Moneda.ogg')
