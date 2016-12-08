@@ -858,7 +858,7 @@ class eBala(pygame.sprite.Sprite):
 
 # CLASE PARA LEER EL MAPA Y CREAR EL NIVEL
 class nivel(object): 
-    def __init__(self, nivel):
+    def __init__(self, level):
         self.nivel = []
         self.mundo = []
         self.enemigos1 = pygame.sprite.Group()
@@ -880,9 +880,9 @@ class nivel(object):
         self.pildoras = pygame.sprite.Group()
         self.estrellas = pygame.sprite.Group()
         self.todos = pygame.sprite.Group()
-        if nivel==1:
+        if level==1:
             self.linea = open("niveles/Nivel1.txt", "r")
-        elif nivel==2:
+        elif level==2:
             self.linea = open("niveles/Nivel2.txt", "r")
         else:
             self.linea = open("niveles/Nivel3.txt", "r")
@@ -1009,11 +1009,11 @@ def Comenzar():
     jugador.ganar = False
     jugador.no_mover()
     jugador.no_arriba()
-    jugador.rect.x = 25
-    jugador.rect.y = 1125
+    jugador.rect.x = 30
+    jugador.rect.y = 0
     jugador.inCuadro = False
     jugador.poder = 20
-    jugador.velocidad = 5
+    jugador.velocidad = 9
     pantalla1 = pygame.display.set_mode(T_PANTALLA)
     texto = fuente.render("N I V E L   1", True, BLANCO)
     texto2 = fuente.render("Casa Sala Principal", True, BLANCO)
@@ -1377,13 +1377,11 @@ def Jugar():
 
             
             Item.play()
-            N2.stop()
-            N3.stop()
-            N1.play(-1)
-            Comenzar()
-            jugador.menosPuntaje1()
+            nivel.Limpiar()
+            
+
             jugador.rect.x = 25
-            jugador.rect.y = 1125
+            jugador.rect.y = 30
             pantalla1 = pygame.display.set_mode(T_PANTALLA)
             texto = fuente.render("N I V E L   1 ", True, BLANCO)
             texto2 = fuente.render("Casa Sala Principal", True, BLANCO)
@@ -1413,7 +1411,7 @@ def Jugar():
             #Preparando el nivel 2
 
             jugador = nivel2.jugador
-            jugador.velocidad = 5
+            jugador.velocidad = 9
             nivel.Limpiar()
             nivel = nivel2
             mundo = nivel.mundo
@@ -1461,7 +1459,7 @@ def Jugar():
             #Preparando el nivel 3
 
             jugador = nivel3.jugador
-            jugador.velocidad = 5
+            jugador.velocidad = 9
             nivel.Limpiar()
             nivel = nivel3
             mundo = nivel.mundo
@@ -1626,7 +1624,11 @@ def Jugar():
             N1.stop()
             N2.stop()
             N3.stop()
+
             InicioJuego()
+
+            Jugar()
+
             pantalla1 = pygame.display.set_mode(T_PANTALLA)
             texto = fuente.render("A L I A S 7 0  H A  C A I D O A L I N F I E R N O", True, BLANCO)
             puntajem = fuente.render("PUNTAJE: " + str(jugador.puntaje), True, BLANCO)
