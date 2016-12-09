@@ -212,7 +212,7 @@ class Jugador(pygame.sprite.Sprite):
         self.velocidad = 1
         self.contacto = False
         self.salto = False
-        self.image = pygame.image.load('Jugador/b_Verde.png').convert_alpha()
+        self.image = pygame.image.load('Jugador/huesos.png').convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y  
@@ -346,7 +346,7 @@ class Bala(pygame.sprite.Sprite):
                 self.pausado = False
                 self.O = O
                 self.velocidad = 20     
-                self.image = pygame.image.load('Jugador/b_Jugador.png').convert_alpha()
+                self.image = pygame.image.load('Jugador/hacha.png').convert_alpha()
                 self.rect = self.image.get_rect()
                 if self.O == "D":
                     self.rect.topleft = [x + 25, y]
@@ -375,9 +375,9 @@ class Laser(pygame.sprite.Sprite):
                 self.pausado = False
                 self.velocidad = 20
                 if O == "D":
-                    self.image = pygame.image.load('Jugador/L_derecho.png').convert_alpha()
+                    self.image = pygame.image.load('Jugador/hueso_der.png').convert_alpha()
                 else:
-                    self.image = pygame.image.load('Jugador/L_izquierdo.png').convert_alpha()
+                    self.image = pygame.image.load('Jugador/hueso_izq.png').convert_alpha()
                 self.rect = self.image.get_rect()
                 if self.O == "D":
                     self.rect.topleft = [x + 25, y]
@@ -1716,9 +1716,9 @@ def Intro():
             pantalla.blit(fondo, (0, 0))
             texto=font.render("C O N T R O L E S", True, BLANCO)
             pantalla.blit(texto, [30, 30])
-            im_jugador = pygame.image.load("Jugador/b_Verde.png").convert_alpha()
-            im_laser = pygame.image.load("Jugador/L_derecho.png").convert_alpha()
-            im_bala = pygame.image.load("Jugador/b_Jugador.png").convert_alpha()
+            im_jugador = pygame.image.load("Jugador/huesos.png").convert_alpha()
+            im_laser = pygame.image.load("Jugador/hueso_der.png").convert_alpha()
+            im_bala = pygame.image.load("Jugador/hacha.png").convert_alpha()
             texto=font.render("Pulsa arriba para saltar", True, BLANCO)
             pantalla.blit(texto, [30, 120])
 
