@@ -703,7 +703,7 @@ class eBoss(pygame.sprite.Sprite):
         self.rect.y = y - 50
         self.velocidad = 5
         self.pausado = False
-        self.vida = 2000
+        self.vida = 1000
         self.movy = 0
         self.poder = 15
         self.movx = 0
@@ -1226,10 +1226,10 @@ def Jugar():
                         explosiones.add(ex)
                         todos.add(ex)
 
-        if jugador.rect.x > 10000 and jugador.rect.y > 3000:
+        if jugador.rect.x > 10000 and jugador.rect.y < 3000:
             jugador.inCuadro = True
 
-        if jugador.rect.y > 2100:
+        if jugador.rect.y > 3000:
             jugador.vida = 0
 
         for l in laser:
@@ -1378,6 +1378,10 @@ def Jugar():
             
             Item.play()
             nivel.Limpiar()
+            N1.stop()
+            N1.play(-1)
+            N2.stop()
+            N3.stop()
             
 
             jugador.rect.x = 25
@@ -1624,6 +1628,8 @@ def Jugar():
             N1.stop()
             N2.stop()
             N3.stop()
+            global nivel
+            nivel.Limpiar()
 
             InicioJuego()
 
