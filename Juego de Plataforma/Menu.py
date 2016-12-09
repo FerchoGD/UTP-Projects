@@ -1382,6 +1382,7 @@ def Jugar():
             N1.play(-1)
             N2.stop()
             N3.stop()
+            Jugar()
             
 
             jugador.rect.x = 25
@@ -1509,7 +1510,7 @@ def Jugar():
 
         tim = pygame.time.get_ticks()/1000
         if jugador.inCuadro:
-            print tim
+            print (tim)
             if tim % 10 == 0 and Bandera == False:
                 Bandera = True
                 aux = random.randrange(5)
@@ -1611,10 +1612,10 @@ def Jugar():
         camara.dibujarSprites(pantalla, todos)
         pygame.display.flip()    
         puntos = fuente.render("VIDA: " +str(jugador.vida) + "%", True, BLANCO)
-        pantalla.blit(puntos, [15, 20])
+        pantalla.blit(puntos, [30, 20])
         puntaje = fuente.render("PUNTAJE: " + str(jugador.puntaje), True, BLANCO)
         pantalla.blit(puntaje, [750, 20])
-        reloj.tick(60)
+        reloj.tick(50)
 
         if(pausa):
             texto = fuenteP.render("P A U S A", True, BLANCO)
@@ -1624,7 +1625,7 @@ def Jugar():
             pantalla.blit(texto, [texto_x, texto_y])
             pygame.display.flip()          
 
-        if (jugador.vida == 0):
+        if (jugador.vida <= 0):
             N1.stop()
             N2.stop()
             N3.stop()
@@ -1755,13 +1756,13 @@ fuenteG = pygame.font.Font(None, 70)
 fuente2 = pygame.font.Font(None, 24)
 
 terminar = False
-fMenu = pygame.font.Font("Cool.otf", 60)
-fMenuT = pygame.font.Font("Dragon.ttf",180)
-rMenu = fMenuT.render("SIENDO", True, BLANCO)
-rMenu2 = fMenuT.render("LA", True, BLANCO)
+fMenu = pygame.font.Font("Dragon.ttf", 60)
+fMenuT = pygame.font.Font("Cool.otf",100)
+rMenu = fMenuT.render("VOLVIENDO", True, BLANCO)
+rMenu2 = fMenuT.render("DE LA", True, BLANCO)
 rMenu3 = fMenuT.render("MUERTE", True, BLANCO)
 
-Menu = [Opcion("Jugar", (440, 400), 0, fMenu, pantalla),
+Menu = [Opcion("Jugar", (440, 450), 0, fMenu, pantalla),
         Opcion("Salir", (448, 500), 1, fMenu, pantalla)]    
 
 N1 = pygame.mixer.Sound("Sonidos/nivel1.ogg")
@@ -1785,9 +1786,9 @@ while not terminar:
                 if event.type == pygame.QUIT:
                         terminar = True
         pantalla.fill((0, 0, 0))
-        pantalla.blit(rMenu, [250, 30])
-        pantalla.blit(rMenu2, [250, 140])
-        pantalla.blit(rMenu3, [250, 250])
+        pantalla.blit(rMenu, [250, 50])
+        pantalla.blit(rMenu2, [380, 160])
+        pantalla.blit(rMenu3, [300, 270])
         
         for opcion in Menu:
                 if opcion.rect.collidepoint(pygame.mouse.get_pos()):
