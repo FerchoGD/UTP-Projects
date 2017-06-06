@@ -1,0 +1,70 @@
+salida del sistema ---> temperatura entre 15 °C hasta 25°C
+
+
+Entradas: ---> temperatura actual
+	   --> cantidad de pasajeros
+
+
+
+Etiquetas linguisticas: Funciones trapezoidales
+
+Entradas
+
+	Pasajero: intervalo [0,30]
+	
+	* Pocos (P) [0,14]
+	* Medio (M) [12,22]
+	* Muchos (Mu) [20,30]
+
+	Temperatura: intervalo [20,32 ]
+
+	* ideal (I) [20,25]
+	* Caliente (C)	[22,27]
+	* Muy Caliente (MC) [26,32]
+
+Salida
+
+	Temperatura aire intervalo [15,25] 
+	
+	*Baja (B) [15,19]
+	*Mediana (Me) [18,22]
+	*Alta (A) [20,25]
+
+Reglas
+
+	- Si la cantidad de pasajeros es Pocos y la temperatura es ideal entonces la temperatura del aire sera alta
+
+	- Si la cantidad de pasajeros es Media y la temperatura es Media entonces la temperatura del aire sera Media
+
+	- Si la cantidad de pasajeros es Muchos y la temperatura es Alta entonces la temperatura del aire sera Baja
+
+	- Si la cantidad de pasajeros es Pocos y la temperatura es Media entonces la temperatura del aire sera Media
+
+	- Si la cantidad de pasajeros es Pocos y la temperatura es Alta entonces la temperatura del aire sera Media
+
+	- Si la cantidad de pasajeros es Media y la temperatura es Baja entonces la temperatura del aire sera Alta
+
+	- Si la cantidad de pasajeros es Media y la temperatura es Alta entonces la temperatura del aire sera Baja
+
+	- Si la cantidad de pasajeros es Muchos y la temperatura es Baja entonces la temperatura del aire sera Media
+
+	- Si la cantidad de pasajeros es Muchos y la temperatura es Media entonces la temperatura del aire sera Media
+
+
+
+Resumiendo las reglas quedaría:
+
+
+	-Si la cantidad de pasajeros es Muchos OR Media AND La temperatura es Alta THEN Aire es Baja
+
+	-Si la temperatura es Media THEN Aire es Media
+
+	-Si la cantidad de pasajeros es Muchos AND la temperatura es Baja THEN Aire es Media
+
+	-Si la cantidad de pasajeros es Pocos AND la temperatura es Ideal THEN Aire es Alta
+
+	-Si la cantidad de pasajeros es Media AND la temperatura es Baja THEN Aire es Alta
+
+
+
+	
